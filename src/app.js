@@ -3,8 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import { sequelize } from './index.js';
 import { seedDefaultCuentos } from './seeders/defaultCuentos.js';
+import { seedDefaultStories } from './seeders/defaultStories.js';
 import authRoutes from './routes/auth.js';
 import cuentosRoutes from './routes/cuentos.js';
+import storiesRoutes from './routes/stories.js';
 
 dotenv.config();
 
@@ -16,6 +18,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/cuentos', cuentosRoutes);
+app.use('/api/stories', storiesRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cuentos para Alexa funcionando' });
@@ -30,6 +33,7 @@ async function startServer() {
     console.log('Modelos sincronizados con la base de datos.');
     
     await seedDefaultCuentos();
+    await seedDefaultStories();
     
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en puerto ${PORT}`);
