@@ -1,127 +1,200 @@
-import { Story, Decision, Option } from '../index.js';
+import { Story, StoryNode, StoryChoice } from '../index.js';
 
-const storiesData = [
-  {
-    story: {
-      title: "La Aventura del Bosque Encantado",
-      description: "Una historia interactiva donde explores un misterioso bosque lleno de criaturas mágicas y tomas decisiones que cambiarán tu destino.",
-      image: "files/bosque-encantado.png",
-      duration: "8 min",
-      category: "Aventuras Interactivas",
-      esDefault: true
-    },
-    decisions: [
-      {
-        number: 1,
-        text: "Te encuentras en la entrada de un bosque encantado. Hay dos caminos: uno hacia la izquierda que brilla con una luz dorada, y otro hacia la derecha que está cubierto de niebla misteriosa. ¿Qué camino eliges?",
-        options: [
-          {
-            text: "Tomar el camino dorado hacia la izquierda",
-            next_decision_number: 2,
-            ending_text: null
-          },
-          {
-            text: "Aventurarse por el camino neblinoso hacia la derecha",
-            next_decision_number: 3,
-            ending_text: null
-          }
-        ]
-      },
-      {
-        number: 2,
-        text: "El camino dorado te lleva a un claro donde encuentras un unicornio herido. Sus ojos te miran con esperanza. ¿Qué decides hacer?",
-        options: [
-          {
-            text: "Ayudar al unicornio con hierbas medicinales",
-            next_decision_number: null,
-            ending_text: "Tu bondad es recompensada. El unicornio se recupera y te otorga un cuerno mágico que te protegerá para siempre. Regresas a casa como un héroe bendecido por la magia."
-          },
-          {
-            text: "Buscar ayuda en el pueblo cercano",
-            next_decision_number: null,
-            ending_text: "Corres al pueblo y regresas con un sanador. Juntos curan al unicornio, quien te agradece con una melodía mágica que siempre recordarás. Tu compasión salvó una vida mágica."
-          }
-        ]
-      },
-      {
-        number: 3,
-        text: "La niebla se disipa y te encuentras frente a una cabaña misteriosa. De su chimenea sale humo púrpura y escuchas risas extrañas desde adentro. ¿Qué haces?",
-        options: [
-          {
-            text: "Tocar la puerta y entrar valientemente",
-            next_decision_number: null,
-            ending_text: "Dentro encuentras a una bruja amigable que te enseña pociones mágicas. Te conviertes en su aprendiz y aprendes los secretos de la magia. Tu aventura se convierte en una nueva vida llena de conocimiento místico."
-          },
-          {
-            text: "Observar desde la ventana para ver qué sucede",
-            next_decision_number: null,
-            ending_text: "Descubres que la cabaña es una escuela de duendes traviesos. Te ríes tanto que te descubren, pero en lugar de enojarse, te invitan a sus juegos. Pasas la tarde más divertida de tu vida y regresas con historias increíbles."
-          }
-        ]
-      }
-    ]
+// Historia basada en tu ejemplo del frontend
+const exampleForest = {
+  story: {
+    title: "El Bosque Brillante",
+    description: "Te despiertas en un bosque brillante. Un sendero se divide en dos. A la izquierda, calma; a la derecha, escuchas risas lejanas...",
+    image: "files/bosque-brillante.png",
+    duration: "6 min",
+    category: "Aventuras Interactivas",
+    start_node_id: "start",
+    esDefault: true
   },
-  {
-    story: {
-      title: "El Misterio del Castillo Perdido",
-      description: "Explora un castillo abandonado donde cada decisión te acerca más a resolver un antiguo misterio o te aleja de la verdad.",
-      image: "files/castillo-perdido.png",
-      duration: "10 min",
-      category: "Misterio Interactivo",
-      esDefault: true
+  nodes: {
+    start: {
+      content: "Te despiertas en un bosque brillante. Un sendero se divide en dos. A la izquierda, calma; a la derecha, escuchas risas lejanas...",
+      choices: [
+        { text: "Tomar el sendero izquierdo", nextId: "left1" },
+        { text: "Ir por la derecha", nextId: "right1" }
+      ]
     },
-    decisions: [
-      {
-        number: 1,
-        text: "Llegas a un castillo abandonado en la cima de una montaña. La puerta principal está cerrada, pero ves una ventana abierta en el segundo piso y una entrada de servicio en la parte trasera. ¿Cómo entras?",
-        options: [
-          {
-            text: "Escalar hasta la ventana del segundo piso",
-            next_decision_number: 2,
-            ending_text: null
-          },
-          {
-            text: "Usar la entrada de servicio trasera",
-            next_decision_number: 3,
-            ending_text: null
-          }
-        ]
-      },
-      {
-        number: 2,
-        text: "Al entrar por la ventana, caes en una biblioteca polvorienta. Hay un libro abierto en el escritorio con escritura fresca, y escuchas pasos en el pasillo. ¿Qué haces?",
-        options: [
-          {
-            text: "Leer el libro misterioso en el escritorio",
-            next_decision_number: null,
-            ending_text: "El libro revela el diario del último habitante del castillo. Descubres que escondió un tesoro en la torre norte. Siguiendo las pistas, encuentras un cofre lleno de joyas antiguas y documentos históricos invaluables."
-          },
-          {
-            text: "Esconderte y observar quién hace los ruidos",
-            next_decision_number: null,
-            ending_text: "Descubres que es un fantasma amigable del antiguo bibliotecario. Te cuenta la historia del castillo y te muestra pasadizos secretos. Te conviertes en el guardián de sus secretos y historias."
-          }
-        ]
-      },
-      {
-        number: 3,
-        text: "La entrada trasera te lleva a las cocinas del castillo. Encuentras comida fresca en la mesa y escuchas música viniendo del gran salón. ¿Qué decides investigar?",
-        options: [
-          {
-            text: "Seguir la música hacia el gran salón",
-            next_decision_number: null,
-            ending_text: "Encuentras a los fantasmas del castillo celebrando una fiesta eterna. Te invitan a unirte y descubres que son espíritus alegres que solo querían compañía. Decides visitarlos cada año en la misma fecha."
-          },
-          {
-            text: "Investigar quién preparó la comida fresca",
-            next_decision_number: null,
-            ending_text: "Descubres que un ermitaño vive secretamente en el castillo, cuidándolo. Te enseña sobre su historia y se convierte en tu mentor. Aprendes oficios antiguos y sabiduría olvidada."
-          }
-        ]
-      }
-    ]
+    left1: {
+      content: "Avanzas por el sendero tranquilo y encuentras una señal de madera con símbolos extraños.",
+      choices: [
+        { text: "Seguir la señal", nextId: "left2A" },
+        { text: "Ignorarla y continuar", nextId: "left2B" }
+      ]
+    },
+    right1: {
+      content: "Sigues las risas y hallas un claro con luciérnagas. Una figura con capa te saluda.",
+      choices: [
+        { text: "Saludar a la figura", nextId: "right2A" },
+        { text: "Ocultarte y observar", nextId: "right2B" }
+      ]
+    },
+    left2A: {
+      content: "La señal te guía a un puente de piedra sobre un río esmeralda que susurra tu nombre.",
+      choices: [
+        { text: "Cruzar el puente", nextId: "finalA1" },
+        { text: "Bordear el río", nextId: "finalA2" }
+      ]
+    },
+    left2B: {
+      content: "Ignoras la señal y descubres un árbol hueco que parece invitarte a entrar.",
+      choices: [
+        { text: "Entrar al árbol", nextId: "finalB1" },
+        { text: "Rodearlo con cuidado", nextId: "finalB2" }
+      ]
+    },
+    right2A: {
+      content: "La figura ríe y te ofrece una moneda brillante: 'cara, guía; cruz, misterio'.",
+      choices: [
+        { text: "Elegir cara", nextId: "finalC1" },
+        { text: "Elegir cruz", nextId: "finalC2" }
+      ]
+    },
+    right2B: {
+      content: "Desde las sombras ves un mapa grabado en una roca, marcado con una X.",
+      choices: [
+        { text: "Seguir el mapa", nextId: "finalD1" },
+        { text: "Confiar en tu instinto", nextId: "finalD2" }
+      ]
+    },
+    // Finales
+    finalA1: { 
+      content: "Cruzas el puente y el río te bendice con un camino dorado. Fin.", 
+      isEnding: true 
+    },
+    finalA2: { 
+      content: "Bordeas el río y una barca te lleva a casa. Fin.", 
+      isEnding: true 
+    },
+    finalB1: { 
+      content: "Dentro del árbol, un guardián te nombra Protector del Bosque. Fin.", 
+      isEnding: true 
+    },
+    finalB2: { 
+      content: "Rodeas el árbol y hallas un claro de descanso eterno. Fin.", 
+      isEnding: true 
+    },
+    finalC1: { 
+      content: "Cara: una estrella te guía al castillo de cristal. Fin.", 
+      isEnding: true 
+    },
+    finalC2: { 
+      content: "Cruz: un sendero secreto revela viejos amigos. Fin.", 
+      isEnding: true 
+    },
+    finalD1: { 
+      content: "Sigues la X y recuperas un tesoro olvidado. Fin.", 
+      isEnding: true 
+    },
+    finalD2: { 
+      content: "Tu instinto te lleva a la salida del bosque. Fin.", 
+      isEnding: true 
+    }
   }
-];
+};
+
+// Segunda historia
+const mysteriousIsland = {
+  story: {
+    title: "La Isla Misteriosa",
+    description: "Naufragas en una isla desconocida. Cada decisión determina si encontrarás la salvación o quedarás atrapado para siempre.",
+    image: "files/isla-misteriosa.png",
+    duration: "8 min",
+    category: "Aventuras Interactivas",
+    start_node_id: "start",
+    esDefault: true
+  },
+  nodes: {
+    start: {
+      content: "Despiertas en la orilla de una isla tropical. Ves humo a lo lejos y escuchas tambores. ¿Qué haces?",
+      choices: [
+        { text: "Seguir el humo", nextId: "smoke" },
+        { text: "Ir hacia los tambores", nextId: "drums" }
+      ]
+    },
+    smoke: {
+      content: "El humo proviene de una fogata donde hay un anciano cocinando pescado. Te mira sonriendo.",
+      choices: [
+        { text: "Acercarte y saludar", nextId: "friendly" },
+        { text: "Observar desde lejos", nextId: "cautious" }
+      ]
+    },
+    drums: {
+      content: "Los tambores te llevan a una ceremonia tribal. Los nativos bailan alrededor de una hoguera.",
+      choices: [
+        { text: "Unirte a la danza", nextId: "dance" },
+        { text: "Quedarte escondido", nextId: "hide" }
+      ]
+    },
+    friendly: {
+      content: "El anciano comparte su comida contigo y te habla de un barco que viene cada luna llena.",
+      choices: [
+        { text: "Esperarlo en el muelle", nextId: "rescue1" },
+        { text: "Preguntarle por tesoros", nextId: "treasure1" }
+      ]
+    },
+    cautious: {
+      content: "Desde tu escondite ves que el anciano construye una balsa. Podríías robársela o pedirla.",
+      choices: [
+        { text: "Pedirle ayuda", nextId: "help" },
+        { text: "Tomar la balsa por la noche", nextId: "steal" }
+      ]
+    },
+    dance: {
+      content: "Los nativos te aceptan como uno de los suyos y te enseñan los secretos de la isla.",
+      choices: [
+        { text: "Quedarte para siempre", nextId: "stay" },
+        { text: "Pedirles que te ayuden a escapar", nextId: "escape" }
+      ]
+    },
+    hide: {
+      content: "Descubres que están preparando un ritual para invocar un barco fantasma.",
+      choices: [
+        { text: "Interrumpir el ritual", nextId: "interrupt" },
+        { text: "Esperar a ver qué pasa", nextId: "wait" }
+      ]
+    },
+    // Finales
+    rescue1: { 
+      content: "El barco llega y te rescata. Regresas a casa con historias increíbles. Fin.", 
+      isEnding: true 
+    },
+    treasure1: { 
+      content: "El anciano te muestra un mapa del tesoro pirata. Te conviertes en cazatesoros. Fin.", 
+      isEnding: true 
+    },
+    help: { 
+      content: "El anciano acepta ayudarte. Construyen juntos una balsa mejor y escapas. Fin.", 
+      isEnding: true 
+    },
+    steal: { 
+      content: "Robas la balsa pero naufraga en una tormenta. Quedas atrapado para siempre. Fin.", 
+      isEnding: true 
+    },
+    stay: { 
+      content: "Te quedas en la isla y te conviertes en el líder de la tribu. Fin.", 
+      isEnding: true 
+    },
+    escape: { 
+      content: "Los nativos te ayudan a construir un barco. Escapas con nuevos amigos. Fin.", 
+      isEnding: true 
+    },
+    interrupt: { 
+      content: "Al interrumpir el ritual provocas la ira de los espíritus. Te convierten en estatua. Fin.", 
+      isEnding: true 
+    },
+    wait: { 
+      content: "El barco fantasma aparece y te ofrece un viaje eterno por los mares. Fin.", 
+      isEnding: true 
+    }
+  }
+};
+
+const storiesData = [exampleForest, mysteriousIsland];
 
 const seedDefaultStories = async () => {
   try {
@@ -136,26 +209,33 @@ const seedDefaultStories = async () => {
         const story = await Story.create(storyData.story);
         console.log(`Historia "${storyData.story.title}" creada exitosamente`);
         
-        // Crear las decisiones y opciones
-        for (const decisionData of storyData.decisions) {
-          const decision = await Decision.create({
+        // Crear todos los nodos
+        const createdNodes = {};
+        for (const [nodeId, nodeData] of Object.entries(storyData.nodes)) {
+          const node = await StoryNode.create({
             story_id: story.id,
-            number: decisionData.number,
-            text: decisionData.text
+            node_id: nodeId,
+            content: nodeData.content,
+            is_ending: nodeData.isEnding || false
           });
-          
-          // Crear las opciones para esta decisión
-          for (const optionData of decisionData.options) {
-            await Option.create({
-              decision_id: decision.id,
-              text: optionData.text,
-              next_decision_number: optionData.next_decision_number,
-              ending_text: optionData.ending_text
-            });
+          createdNodes[nodeId] = node;
+        }
+        
+        // Crear las opciones/choices
+        for (const [nodeId, nodeData] of Object.entries(storyData.nodes)) {
+          if (nodeData.choices) {
+            const node = createdNodes[nodeId];
+            for (const choice of nodeData.choices) {
+              await StoryChoice.create({
+                node_id: node.id,
+                text: choice.text,
+                next_node_id: choice.nextId
+              });
+            }
           }
         }
         
-        console.log(`Decisiones y opciones para "${storyData.story.title}" creadas exitosamente`);
+        console.log(`Nodos y opciones para "${storyData.story.title}" creados exitosamente`);
       } else {
         console.log(`Historia "${storyData.story.title}" ya existe`);
       }

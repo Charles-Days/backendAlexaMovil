@@ -21,6 +21,11 @@ export default (sequelize, DataTypes) => {
         key: 'id'
       }
     },
+    current_node_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'start'
+    },
     status: {
       type: DataTypes.ENUM('in_progress', 'finished'),
       allowNull: false,

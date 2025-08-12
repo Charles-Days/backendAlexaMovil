@@ -1,4 +1,4 @@
-import { Story, Decision, Option, UserSession, UserChoice, User } from '../index.js';
+import { Story, StoryNode, StoryChoice, UserSession, UserChoice, User } from '../index.js';
 import { Op } from 'sequelize';
 
 const getStories = async (req, res) => {
@@ -14,7 +14,7 @@ const getStories = async (req, res) => {
 
     const stories = await Story.findAll({
       where: whereClause,
-      attributes: ['id', 'title', 'description', 'image', 'duration', 'category', 'esDefault'],
+      attributes: ['id', 'title', 'description', 'image', 'duration', 'category', 'start_node_id', 'esDefault'],
       order: [['esDefault', 'DESC'], ['createdAt', 'DESC']]
     });
 
@@ -43,12 +43,12 @@ const getStoryById = async (req, res) => {
       },
       include: [
         {
-          model: Decision,
-          as: 'decisions',
+          model: StoryNode,
+          as: 'nodes',
           include: [
             {
-              model: Option,
-              as: 'options'
+              model: StoryChoice,
+              as: 'choices'
             }
           ]
         }
@@ -59,9 +59,31 @@ const getStoryById = async (req, res) => {
       return res.status(404).json({ error: 'Historia no encontrada' });
     }
 
+    // Convertir a formato de grafo para frontend
+    const storyGraph = {};
+    story.nodes.forEach(node => {
+      storyGraph[node.node_id] = {
+        id: node.node_id,
+        content: node.content,
+        choices: node.choices.map(choice => ({
+          text: choice.text,
+          nextId: choice.next_node_id
+        }))
+      };
+    });
+
     res.json({
       message: 'Historia obtenida exitosamente',
-      story
+      story: {
+        id: story.id,
+        title: story.title,
+        description: story.description,
+        image: story.image,
+        duration: story.duration,
+        category: story.category,
+        startNodeId: story.start_node_id,
+        graph: storyGraph
+      }
     });
   } catch (error) {
     console.error('Error al obtener historia:', error);
@@ -84,16 +106,20 @@ const startStory = async (req, res) => {
     const session = await UserSession.create({
       user_id: userId,
       story_id: storyId,
+      current_node_id: story.start_node_id,
       status: 'in_progress'
     });
 
-    // Obtener la primera decisión
-    const firstDecision = await Decision.findOne({
-      where: { story_id: storyId, number: 1 },
+    // Obtener el nodo inicial
+    const startNode = await StoryNode.findOne({
+      where: { 
+        story_id: storyId, 
+        node_id: story.start_node_id 
+      },
       include: [
         {
-          model: Option,
-          as: 'options'
+          model: StoryChoice,
+          as: 'choices'
         }
       ]
     });
@@ -102,8 +128,21 @@ const startStory = async (req, res) => {
       message: 'Historia iniciada exitosamente',
       session: {
         id: session.id,
-        story: story,
-        currentDecision: firstDecision
+        story: {
+          id: story.id,
+          title: story.title,
+          description: story.description
+        },
+        currentNode: {
+          id: startNode.node_id,
+          content: startNode.content,
+          isEnding: startNode.is_ending,
+          choices: startNode.choices.map(choice => ({
+            id: choice.id,
+            text: choice.text,
+            nextNodeId: choice.next_node_id
+          }))
+        }
       }
     });
   } catch (error) {
@@ -114,7 +153,7 @@ const startStory = async (req, res) => {
 
 const makeChoice = async (req, res) => {
   try {
-    const { sessionId, optionId } = req.body;
+    const { sessionId, choiceId } = req.body;
     const userId = req.user.id;
 
     // Verificar que la sesión pertenece al usuario
@@ -127,54 +166,70 @@ const makeChoice = async (req, res) => {
     }
 
     // Obtener la opción seleccionada
-    const option = await Option.findOne({
-      where: { id: optionId },
-      include: [
-        {
-          model: Decision,
-          as: 'decision'
-        }
-      ]
-    });
-
-    if (!option) {
+    const choice = await StoryChoice.findByPk(choiceId);
+    if (!choice) {
       return res.status(404).json({ error: 'Opción no encontrada' });
     }
+
+    // Obtener el nodo actual para verificar que la opción pertenece a él
+    const currentNode = await StoryNode.findOne({
+      where: { 
+        story_id: session.story_id, 
+        node_id: session.current_node_id 
+      }
+    });
 
     // Guardar la elección del usuario
     await UserChoice.create({
       session_id: sessionId,
-      decision_number: option.decision.number,
-      option_id: optionId
+      from_node_id: session.current_node_id,
+      choice_text: choice.text,
+      to_node_id: choice.next_node_id
+    });
+
+    // Actualizar la sesión al nuevo nodo
+    await session.update({ current_node_id: choice.next_node_id });
+
+    // Obtener el siguiente nodo
+    const nextNode = await StoryNode.findOne({
+      where: { 
+        story_id: session.story_id, 
+        node_id: choice.next_node_id 
+      },
+      include: [
+        {
+          model: StoryChoice,
+          as: 'choices'
+        }
+      ]
     });
 
     let response = {
       message: 'Elección registrada exitosamente',
-      choice: option
+      choice: {
+        text: choice.text,
+        fromNodeId: session.current_node_id,
+        toNodeId: choice.next_node_id
+      }
     };
 
-    // Si la opción tiene ending_text, terminar la historia
-    if (option.ending_text) {
+    // Si el siguiente nodo es un final
+    if (nextNode.is_ending) {
       await session.update({ status: 'finished' });
-      response.ending = option.ending_text;
+      response.ending = nextNode.content;
       response.storyFinished = true;
-    } 
-    // Si tiene next_decision_number, obtener la siguiente decisión
-    else if (option.next_decision_number) {
-      const nextDecision = await Decision.findOne({
-        where: { 
-          story_id: session.story_id, 
-          number: option.next_decision_number 
-        },
-        include: [
-          {
-            model: Option,
-            as: 'options'
-          }
-        ]
-      });
-
-      response.nextDecision = nextDecision;
+    } else {
+      // Continuar con el siguiente nodo
+      response.nextNode = {
+        id: nextNode.node_id,
+        content: nextNode.content,
+        isEnding: nextNode.is_ending,
+        choices: nextNode.choices.map(c => ({
+          id: c.id,
+          text: c.text,
+          nextNodeId: c.next_node_id
+        }))
+      };
     }
 
     res.json(response);

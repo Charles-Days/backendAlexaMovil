@@ -25,6 +25,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    start_node_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'start'
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: true,

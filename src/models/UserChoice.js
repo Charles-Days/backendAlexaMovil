@@ -13,21 +13,17 @@ export default (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    decision_number: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 1,
-        max: 3
-      }
+    from_node_id: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    option_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'options',
-        key: 'id'
-      }
+    choice_text: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    to_node_id: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     tableName: 'user_choices',

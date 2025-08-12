@@ -1,0 +1,16 @@
+{
+  "name": "alexa-cuentacuentos-skill",
+  "version": "1.0.0",
+  "description": "Alexa Skill que consume API de cuentos interactivos",
+  "main": "index.js",
+  "dependencies": {
+    "ask-sdk-core": "^2.13.0",
+    "axios": "^1.6.7"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "cuentos",
+    "interactivos"
+  ]
+}

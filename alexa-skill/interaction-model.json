@@ -1,0 +1,110 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "cuentacuentos colaborativo",
+            "intents": [
+                {
+                    "name": "IniciarHistoriaIntent",
+                    "slots": [],
+                    "samples": [
+                        "quiero comenzar una historia",
+                        "empezar historia",
+                        "crear una historia nueva",
+                        "nueva historia",
+                        "contar un cuento",
+                        "comenzar un cuento",
+                        "quiero un cuento",
+                        "cuéntame algo"
+                    ]
+                },
+                {
+                    "name": "DecisionIntent",
+                    "slots": [
+                        {
+                            "name": "opcion",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "elijo {opcion}",
+                        "escojo {opcion}",
+                        "la opción es {opcion}",
+                        "mi decisión es {opcion}",
+                        "quiero {opcion}",
+                        "opción {opcion}",
+                        "la {opcion}",
+                        "número {opcion}",
+                        "{opcion}",
+                        "opción número {opcion}",
+                        "la opción número {opcion}"
+                    ]
+                },
+                {
+                    "name": "GuardarHistoriaIntent",
+                    "slots": [],
+                    "samples": [
+                        "quiero guardar la historia",
+                        "guardar mi cuento",
+                        "guardar historia",
+                        "quiero que la guardes",
+                        "guarda la historia",
+                        "guardar",
+                        "guárdala"
+                    ]
+                },
+                {
+                    "name": "EscucharHistoriaGuardadaIntent",
+                    "slots": [],
+                    "samples": [
+                        "quiero escuchar mis historias guardadas",
+                        "reproducir una historia guardada",
+                        "mostrar mis cuentos",
+                        "leer un cuento que guardé",
+                        "mis historias",
+                        "historias guardadas",
+                        "mis cuentos guardados"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "ayuda",
+                        "qué puedo hacer",
+                        "como funciona",
+                        "ayúdame"
+                    ]
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": [
+                        "cancelar",
+                        "salir",
+                        "terminar"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "parar",
+                        "detener",
+                        "para"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                }
+            ],
+            "types": []
+        },
+        "dialog": {
+            "intents": [],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": []
+    }
+}

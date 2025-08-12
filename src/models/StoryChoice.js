@@ -1,34 +1,30 @@
 export default (sequelize, DataTypes) => {
-  const Decision = sequelize.define('Decision', {
+  const StoryChoice = sequelize.define('StoryChoice', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    story_id: {
+    node_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'stories',
+        model: 'story_nodes',
         key: 'id'
       }
     },
-    number: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 1,
-        max: 3
-      }
-    },
     text: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    next_node_id: {
+      type: DataTypes.STRING,
       allowNull: false
     }
   }, {
-    tableName: 'decisions',
+    tableName: 'story_choices',
     timestamps: true
   });
 
-  return Decision;
+  return StoryChoice;
 };
