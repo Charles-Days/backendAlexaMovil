@@ -1,0 +1,35 @@
+{
+  "name": "backend-alexa-movil",
+  "version": "1.0.0",
+  "description": "API backend para skill de Alexa con cuentos",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.3",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "sequelize-cli": "^6.6.2"
+  },
+  "keywords": [
+    "alexa",
+    "api",
+    "node",
+    "sequelize",
+    "cuentos"
+  ],
+  "author": "",
+  "license": "ISC"
+}
