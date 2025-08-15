@@ -7,6 +7,7 @@ import { seedDefaultStories } from './seeders/defaultStories.js';
 import authRoutes from './routes/auth.js';
 import cuentosRoutes from './routes/cuentos.js';
 import storiesRoutes from './routes/stories.js';
+import unifiedStoriesRoutes from './routes/unifiedStories.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/cuentos', cuentosRoutes);
 app.use('/api/stories', storiesRoutes);
+app.use('/api/unified-stories', unifiedStoriesRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cuentos para Alexa funcionando' });
@@ -35,9 +37,9 @@ async function startServer() {
     await seedDefaultCuentos();
     await seedDefaultStories();
     
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en puerto ${PORT}`);
-    });
+    app.listen(3003, '0.0.0.0', () => {
+      console.log('Servidor corriendo en puerto 3003');
+    });    
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);
   }

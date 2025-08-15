@@ -10,10 +10,12 @@ import {
 
 const router = express.Router();
 
+router.get('/sessions', authenticateToken, getUserSessions);
+
 router.get('/', authenticateToken, getStories);
 router.get('/:id', authenticateToken, getStoryById);
 router.post('/start', authenticateToken, startStory);
 router.post('/choice', authenticateToken, makeChoice);
-router.get('/sessions/user', authenticateToken, getUserSessions);
+
 
 export default router;

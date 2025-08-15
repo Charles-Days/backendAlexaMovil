@@ -1,13 +1,13 @@
 import { Story, StoryNode, StoryChoice } from '../index.js';
 
-// Historia basada en tu ejemplo del frontend
-const exampleForest = {
+// Historia: El Bosque Brillante
+const forestStory = {
   story: {
     title: "El Bosque Brillante",
     description: "Te despiertas en un bosque brillante. Un sendero se divide en dos. A la izquierda, calma; a la derecha, escuchas risas lejanas...",
-    image: "files/bosque-brillante.png",
-    duration: "6 min",
-    category: "Aventuras Interactivas",
+    image: "https://img.lovepik.com/photo/60178/0375.jpg_wh860.jpg",
+    duration: "5 min",
+    category: "Aventura",
     start_node_id: "start",
     esDefault: true
   },
@@ -61,7 +61,6 @@ const exampleForest = {
         { text: "Confiar en tu instinto", nextId: "finalD2" }
       ]
     },
-    // Finales
     finalA1: { 
       content: "Cruzas el puente y el río te bendice con un camino dorado. Fin.", 
       isEnding: true 
@@ -97,104 +96,257 @@ const exampleForest = {
   }
 };
 
-// Segunda historia
-const mysteriousIsland = {
+// Historia: Nave Espacial
+const spaceStory = {
   story: {
-    title: "La Isla Misteriosa",
-    description: "Naufragas en una isla desconocida. Cada decisión determina si encontrarás la salvación o quedarás atrapado para siempre.",
-    image: "files/isla-misteriosa.png",
-    duration: "8 min",
-    category: "Aventuras Interactivas",
+    title: "Nave Espacial",
+    description: "Despiertas en una cápsula criogénica. La nave está en silencio, pero una luz roja parpadea en el panel de mando.",
+    image: "https://img.lovepik.com/photo/60178/0375.jpg_wh860.jpg",
+    duration: "4 min",
+    category: "Ciencia Ficción",
     start_node_id: "start",
     esDefault: true
   },
   nodes: {
     start: {
-      content: "Despiertas en la orilla de una isla tropical. Ves humo a lo lejos y escuchas tambores. ¿Qué haces?",
+      content: "Despiertas en una cápsula criogénica. La nave está en silencio, pero una luz roja parpadea en el panel de mando.",
       choices: [
-        { text: "Seguir el humo", nextId: "smoke" },
-        { text: "Ir hacia los tambores", nextId: "drums" }
+        { text: "Revisar el panel de mando", nextId: "panel1" },
+        { text: "Explorar el pasillo principal", nextId: "hall1" }
       ]
     },
-    smoke: {
-      content: "El humo proviene de una fogata donde hay un anciano cocinando pescado. Te mira sonriendo.",
+    panel1: {
+      content: "El panel muestra una alerta: 'Fuga de oxígeno en el sector 7'.",
       choices: [
-        { text: "Acercarte y saludar", nextId: "friendly" },
-        { text: "Observar desde lejos", nextId: "cautious" }
+        { text: "Sellar el sector 7", nextId: "panel2A" },
+        { text: "Ignorar y buscar a la tripulación", nextId: "panel2B" }
       ]
     },
-    drums: {
-      content: "Los tambores te llevan a una ceremonia tribal. Los nativos bailan alrededor de una hoguera.",
+    hall1: {
+      content: "Caminas por el pasillo y encuentras un robot de servicio bloqueando el camino.",
       choices: [
-        { text: "Unirte a la danza", nextId: "dance" },
-        { text: "Quedarte escondido", nextId: "hide" }
+        { text: "Hablar con el robot", nextId: "hall2A" },
+        { text: "Buscar un atajo", nextId: "hall2B" }
       ]
     },
-    friendly: {
-      content: "El anciano comparte su comida contigo y te habla de un barco que viene cada luna llena.",
+    panel2A: {
+      content: "Sellas el sector, pero detectas movimiento no identificado en el hangar.",
       choices: [
-        { text: "Esperarlo en el muelle", nextId: "rescue1" },
-        { text: "Preguntarle por tesoros", nextId: "treasure1" }
+        { text: "Ir al hangar", nextId: "finalA1" },
+        { text: "Asegurar la cabina de mando", nextId: "finalA2" }
       ]
     },
-    cautious: {
-      content: "Desde tu escondite ves que el anciano construye una balsa. Podríías robársela o pedirla.",
+    panel2B: {
+      content: "No encuentras a nadie, pero oyes pasos metálicos acercándose.",
       choices: [
-        { text: "Pedirle ayuda", nextId: "help" },
-        { text: "Tomar la balsa por la noche", nextId: "steal" }
+        { text: "Esconderte", nextId: "finalB1" },
+        { text: "Enfrentarte a lo que sea", nextId: "finalB2" }
       ]
     },
-    dance: {
-      content: "Los nativos te aceptan como uno de los suyos y te enseñan los secretos de la isla.",
+    hall2A: {
+      content: "El robot dice: 'Acceso restringido. Autorízate'.",
       choices: [
-        { text: "Quedarte para siempre", nextId: "stay" },
-        { text: "Pedirles que te ayuden a escapar", nextId: "escape" }
+        { text: "Dar código de capitán", nextId: "finalC1" },
+        { text: "Hackear al robot", nextId: "finalC2" }
       ]
     },
-    hide: {
-      content: "Descubres que están preparando un ritual para invocar un barco fantasma.",
+    hall2B: {
+      content: "Encuentras una compuerta de mantenimiento abierta, pero escuchas ruidos adentro.",
       choices: [
-        { text: "Interrumpir el ritual", nextId: "interrupt" },
-        { text: "Esperar a ver qué pasa", nextId: "wait" }
+        { text: "Entrar", nextId: "finalD1" },
+        { text: "Buscar otra ruta", nextId: "finalD2" }
       ]
     },
-    // Finales
-    rescue1: { 
-      content: "El barco llega y te rescata. Regresas a casa con historias increíbles. Fin.", 
+    finalA1: { 
+      content: "En el hangar descubres una nave alienígena acoplada. Fin.", 
       isEnding: true 
     },
-    treasure1: { 
-      content: "El anciano te muestra un mapa del tesoro pirata. Te conviertes en cazatesoros. Fin.", 
+    finalA2: { 
+      content: "Aseguras la cabina, pero quedas atrapado en ella. Fin.", 
       isEnding: true 
     },
-    help: { 
-      content: "El anciano acepta ayudarte. Construyen juntos una balsa mejor y escapas. Fin.", 
+    finalB1: { 
+      content: "Te escondes, pero algo te encuentra. Fin.", 
       isEnding: true 
     },
-    steal: { 
-      content: "Robas la balsa pero naufraga en una tormenta. Quedas atrapado para siempre. Fin.", 
+    finalB2: { 
+      content: "Te enfrentas a un dron de seguridad fuera de control. Fin.", 
       isEnding: true 
     },
-    stay: { 
-      content: "Te quedas en la isla y te conviertes en el líder de la tribu. Fin.", 
+    finalC1: { 
+      content: "El robot te reconoce como capitán y te escolta. Fin.", 
       isEnding: true 
     },
-    escape: { 
-      content: "Los nativos te ayudan a construir un barco. Escapas con nuevos amigos. Fin.", 
+    finalC2: { 
+      content: "Hackeas al robot, pero activa una alarma. Fin.", 
       isEnding: true 
     },
-    interrupt: { 
-      content: "Al interrumpir el ritual provocas la ira de los espíritus. Te convierten en estatua. Fin.", 
+    finalD1: { 
+      content: "Dentro hay un alienígena herido pidiendo ayuda. Fin.", 
       isEnding: true 
     },
-    wait: { 
-      content: "El barco fantasma aparece y te ofrece un viaje eterno por los mares. Fin.", 
+    finalD2: { 
+      content: "Encuentras una salida que lleva a la bodega. Fin.", 
       isEnding: true 
     }
   }
 };
 
-const storiesData = [exampleForest, mysteriousIsland];
+// Historia: Misterio de la Noche
+const mysteryStory = {
+  story: {
+    title: "Misterio de la Noche",
+    description: "Es medianoche en la ciudad. Un mensaje anónimo llega a tu teléfono: 'Si quieres la verdad, ve al muelle 14'.",
+    image: "https://img.lovepik.com/photo/60178/0375.jpg_wh860.jpg",
+    duration: "4 min",
+    category: "Misterio",
+    start_node_id: "start",
+    esDefault: true
+  },
+  nodes: {
+    start: {
+      content: "Es medianoche en la ciudad. Un mensaje anónimo llega a tu teléfono: 'Si quieres la verdad, ve al muelle 14'.",
+      choices: [
+        { text: "Ir al muelle 14", nextId: "dock1" },
+        { text: "Ignorar el mensaje y quedarte en casa", nextId: "home1" }
+      ]
+    },
+    dock1: {
+      content: "El muelle está desierto, salvo por un maletín apoyado contra una farola parpadeante.",
+      choices: [
+        { text: "Abrir el maletín", nextId: "dock2A" },
+        { text: "Observar desde la distancia", nextId: "dock2B" }
+      ]
+    },
+    home1: {
+      content: "Intentas dormir, pero escuchas pasos afuera. Alguien toca la puerta tres veces.",
+      choices: [
+        { text: "Abrir la puerta", nextId: "home2A" },
+        { text: "Mirar por la mirilla", nextId: "home2B" }
+      ]
+    },
+    dock2A: {
+      content: "Dentro hay fotos tuyas vigilándote durante semanas. Un sobre tiene la dirección de un almacén.",
+      choices: [
+        { text: "Ir al almacén", nextId: "finalA1" },
+        { text: "Quemar las pruebas", nextId: "finalA2" }
+      ]
+    },
+    dock2B: {
+      content: "Ves a un hombre con sombrero acercarse. Susurra tu nombre y desaparece en la niebla.",
+      choices: [
+        { text: "Seguirlo", nextId: "finalB1" },
+        { text: "Quedarte quieto", nextId: "finalB2" }
+      ]
+    },
+    home2A: {
+      content: "Un desconocido empapado te entrega una llave antigua y se marcha sin decir palabra.",
+      choices: [
+        { text: "Probar la llave en tu casa", nextId: "finalC1" },
+        { text: "Guardarla para más tarde", nextId: "finalC2" }
+      ]
+    },
+    home2B: {
+      content: "Por la mirilla ves un sobre rojo. Dentro, una foto tuya en el muelle 14.",
+      choices: [
+        { text: "Ir al muelle", nextId: "finalD1" },
+        { text: "Llamar a la policía", nextId: "finalD2" }
+      ]
+    },
+    finalA1: { 
+      content: "El almacén revela un centro de vigilancia clandestino. Tu nombre está en la lista. Fin.", 
+      isEnding: true 
+    },
+    finalA2: { 
+      content: "Quemaste el maletín, pero una sombra te observa desde un tejado. Fin.", 
+      isEnding: true 
+    },
+    finalB1: { 
+      content: "Lo sigues hasta un túnel donde desaparece frente a tus ojos. Fin.", 
+      isEnding: true 
+    },
+    finalB2: { 
+      content: "La figura se esfuma y quedas con más preguntas que respuestas. Fin.", 
+      isEnding: true 
+    },
+    finalC1: { 
+      content: "La llave abre una puerta secreta en tu sótano. Dentro, cajas con archivos de tu vida. Fin.", 
+      isEnding: true 
+    },
+    finalC2: { 
+      content: "Guardas la llave, pero al día siguiente ha desaparecido. Fin.", 
+      isEnding: true 
+    },
+    finalD1: { 
+      content: "El muelle está vacío, salvo por un teléfono que empieza a sonar. Fin.", 
+      isEnding: true 
+    },
+    finalD2: { 
+      content: "La policía llega, pero no encuentra nada. Solo queda el sobre rojo. Fin.", 
+      isEnding: true 
+    }
+  }
+};
+
+// Historia: El León y el Ratón
+const lionMouseStory = {
+  story: {
+    title: "El León y el Ratón",
+    description: "Un león dormía plácidamente bajo un gran árbol. De pronto, un pequeño ratón corre por su cuerpo y lo despierta.",
+    image: "https://www.chiquipedia.com/imagenes/el-raton-y-el-leon.jpg",
+    duration: "3 min",
+    category: "Fábulas",
+    start_node_id: "start",
+    esDefault: true
+  },
+  nodes: {
+    start: {
+      content: "Un león dormía plácidamente bajo un gran árbol. De pronto, un pequeño ratón corre por su cuerpo y lo despierta.",
+      choices: [
+        { text: "Atrapar al ratón", nextId: "catchMouse" },
+        { text: "Dejarlo escapar", nextId: "letGo" }
+      ]
+    },
+    catchMouse: {
+      content: "El león atrapa al ratón con su gran garra. El ratón, temblando, le pide que lo perdone y promete ayudarlo algún día.",
+      choices: [
+        { text: "Perdonarlo", nextId: "letGo" },
+        { text: "Comérselo", nextId: "finalEat" }
+      ]
+    },
+    letGo: {
+      content: "El león deja ir al ratón, pensando que un animal tan pequeño nunca podría ayudarle. Días después, el león cae en una trampa de cazadores.",
+      choices: [
+        { text: "Rugir pidiendo ayuda", nextId: "callForHelp" },
+        { text: "Intentar romper la red solo", nextId: "tryAlone" }
+      ]
+    },
+    callForHelp: {
+      content: "El ratón escucha los rugidos y corre hacia el león. Comienza a roer las cuerdas de la red.",
+      choices: [
+        { text: "Agradecerle", nextId: "finalFree" },
+        { text: "Seguir rugiendo", nextId: "finalFree" }
+      ]
+    },
+    tryAlone: {
+      content: "El león lucha con fuerza, pero las cuerdas son demasiado resistentes. Sin embargo, el ratón aparece y comienza a ayudarlo.",
+      choices: [
+        { text: "Agradecerle", nextId: "finalFree" },
+        { text: "Seguir intentando romper la red", nextId: "finalFree" }
+      ]
+    },
+    finalFree: {
+      content: "El ratón logra liberar al león. El león, sorprendido y agradecido, comprende que incluso el más pequeño puede ayudar al más grande. Fin.",
+      isEnding: true
+    },
+    finalEat: {
+      content: "El león devora al ratón. Nunca descubre que un día ese pequeño habría podido salvarle la vida. Fin.",
+      isEnding: true
+    }
+  }
+};
+
+const storiesData = [forestStory, spaceStory, mysteryStory, lionMouseStory];
 
 const seedDefaultStories = async () => {
   try {

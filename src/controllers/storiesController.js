@@ -56,7 +56,7 @@ const getStoryById = async (req, res) => {
     });
 
     if (!story) {
-      return res.status(404).json({ error: 'Historia no encontrada' });
+      return res.status(404).json({ error: 'Historia no encontradaaaaaa' });
     }
 
     // Convertir a formato de grafo para frontend
@@ -208,7 +208,7 @@ const makeChoice = async (req, res) => {
       message: 'Elección registrada exitosamente',
       choice: {
         text: choice.text,
-        fromNodeId: session.current_node_id,
+        fromNodeId: currentNode.node_id,
         toNodeId: choice.next_node_id
       }
     };
@@ -241,7 +241,11 @@ const makeChoice = async (req, res) => {
 
 const getUserSessions = async (req, res) => {
   try {
+
+    console.log("j-----------------*********njkdsnjk---------------------****************dsankj");
+
     const userId = req.user.id;
+   
 
     const sessions = await UserSession.findAll({
       where: { user_id: userId },
@@ -253,21 +257,31 @@ const getUserSessions = async (req, res) => {
         },
         {
           model: UserChoice,
-          as: 'choices',
-          include: [
-            {
-              model: Option,
-              as: 'option'
-            }
-          ]
+          as: 'choices'
         }
       ],
       order: [['createdAt', 'DESC']]
     });
 
+    const formattedSessions = sessions.map(session => ({
+      id: session.id,
+      status: session.status,
+      createdAt: session.createdAt,
+      story: {
+        id: session.story.id,
+        title: session.story.title,
+        image: session.story.image
+      },
+      choices: session.choices.map(choice => ({
+        choice_text: choice.choice_text,
+        from_node_id: choice.from_node_id,
+        to_node_id: choice.to_node_id
+      }))
+    }));
+
     res.json({
       message: 'Sesiones obtenidas exitosamente',
-      sessions
+      sessions: formattedSessions
     });
   } catch (error) {
     console.error('Error al obtener sesiones:', error);
